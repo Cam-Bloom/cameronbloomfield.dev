@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# cameronbloomfield.dev
 
-## Getting Started
+Personal site for Cameron Bloomfield. Version one is the designed CV, rebuilt as a native web page.
 
-First, run the development server:
+- **Stack:** Next.js (App Router), React, TypeScript, Tailwind CSS v4. Fully static, deployed on Vercel.
+- **Design source:** the CV Figma file. Colours, type, spacing, and icons are taken from it; the A4 design is rendered at 2x for the web.
+- **Content:** `content/cv.ts` is the single source of truth. Edit it and the page, print view, and structured data all update.
+- **PDF:** the designed CV export lives at `public/Cameron-Bloomfield-CV.pdf` and is served from `/Cameron-Bloomfield-CV.pdf`.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Develop
+
+```sh
+pnpm install
+pnpm dev        # http://localhost:3000
+pnpm check      # lint, typecheck, format check
+pnpm build      # production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Layout
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+app/            routes, metadata routes (OG image, icons, robots, sitemap), global CSS and tokens
+components/cv/  the CV: header, sections, roles, education, skills
+components/     shared icons (exported from Figma)
+content/        CV data
+lib/            site config, date formatting, OG helpers
+assets/fonts/   static font instances used only for build-time image generation
+public/         the PDF and other static files
+```

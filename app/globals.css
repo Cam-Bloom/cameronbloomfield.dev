@@ -1,26 +1,141 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Design tokens, taken from the Figma CV file's variables.
+ * The A4 design is rendered at 2x for the web: 1pt in Figma ≈ 2px here.
+ */
+@theme {
+  --color-ink: #334155; /* light/text/primary */
+  --color-ink-muted: #64748b; /* light/text/secondary, light/label/primary */
+  --color-ink-soft: #6b6b6b; /* company context paragraphs */
+  --color-chip: #f1f5f9; /* light/label/background */
+  --color-chip-text: #5f6e86; /* light/label/primary nudged 2% darker to clear WCAG AA (4.7:1) */
+  --color-line: #e2e8f0; /* light/border */
+  --color-bullet: #cbd5e1;
+  --color-linkedin: #0a66c2;
+  --color-linkedin-bg: #f1f8ff;
+  --color-github: #222222;
+  --color-github-bg: #f2f2f2;
+
+  --text-name: 3.5rem;
+  --text-name--line-height: 1.1;
+  --text-subtitle: 1.25rem;
+  --text-subtitle--line-height: 1.4;
+  --text-heading: 1.125rem;
+  --text-heading--line-height: 1.4;
+  --text-body: 0.875rem;
+  --text-body--line-height: 1.375rem;
+  --text-chip: 0.875rem;
+  --text-chip--line-height: 1.125rem;
+  --text-date: 1rem;
+  --text-date--line-height: 1.25;
+
+  /* Two-column (label | content) layout switches on at this width. */
+  --breakpoint-cv: 46rem;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans:
+    var(--font-plus-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-inconsolata), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  color-scheme: light;
+}
+
+html {
+  background-color: #fff;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #fff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- Header backdrop: soft gradient blob + dashed grid + white fade ---------- */
+
+.cv-blob {
+  position: absolute;
+  left: 50%;
+  top: -15%;
+  width: 132%;
+  height: 214%;
+  translate: -50% -50%;
+  rotate: -6deg;
+  opacity: 0.66;
+  /* Hue runs magenta → violet → blue left to right, exactly as the exported blob. */
+  background: linear-gradient(
+    90deg,
+    rgb(202 36 231) 0%,
+    rgb(199 38 229) 31%,
+    rgb(142 62 240) 50%,
+    rgb(86 81 255) 69%,
+    rgb(83 83 255) 100%
+  );
+  /* Alpha falls off toward the blob's edges; the tilt makes the right side fade sooner. */
+  mask-image:
+    linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      #000 30%,
+      #000 62%,
+      rgb(0 0 0 / 0.62) 80%,
+      rgb(0 0 0 / 0.35) 94%,
+      transparent 100%
+    );
+  mask-composite: intersect;
+  will-change: translate;
+}
+
+@keyframes cv-drift {
+  from {
+    translate: -50% -50%;
+  }
+  to {
+    translate: -53% -46%;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cv-blob {
+    animation: cv-drift 26s ease-in-out infinite alternate;
+  }
+}
+
+/* ---------- Print ---------- */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm 11mm;
+  }
+  html {
+    font-size: 12px; /* every size token is rem-based, so the whole document scales down */
+    background: #fff;
+  }
+  body {
+    background: #fff;
+  }
+  .cv-backdrop,
+  .cv-print-hide {
+    display: none !important;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+  .cv-avoid-break {
+    break-inside: avoid;
+  }
 }
