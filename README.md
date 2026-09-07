@@ -1,6 +1,8 @@
 # cameronbloomfield.dev
 
-Personal site for Cameron Bloomfield. Version one is the designed CV, rebuilt as a native web page.
+Personal site and CV for Cameron Bloomfield, live at [cameronbloomfield.dev](https://cameronbloomfield.dev). Version one is the designed CV, rebuilt as a native web page.
+
+![cameronbloomfield.dev](docs/screenshot.png)
 
 - **Stack:** Next.js (App Router), React, TypeScript, Tailwind CSS v4. Fully static, deployed on Vercel.
 - **Design source:** the CV Figma file. Colours, type, spacing, and icons are taken from it; the A4 design is rendered at 2x for the web.
