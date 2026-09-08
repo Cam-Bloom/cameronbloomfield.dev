@@ -1,8 +1,9 @@
+import { cv } from "@/content/cv";
+
 export const site = {
-  name: "Cameron Bloomfield",
+  name: cv.profile.name,
   url: "https://cameronbloomfield.dev",
-  title: "Cameron Bloomfield · Front-End Focused Full-Stack Developer",
-  description:
-    "Front-end focused full-stack developer in Newcastle, UK. 3+ years building production React and TypeScript applications, shared component libraries, monorepo build tooling, and CI/CD pipelines.",
+  title: `${cv.profile.name} · ${cv.profile.headline}`,
+  description: cv.description,
   cvPdfPath: "/Cameron-Bloomfield-CV.pdf",
 } as const;

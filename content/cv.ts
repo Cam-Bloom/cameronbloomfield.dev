@@ -7,6 +7,7 @@ export interface Profile {
   name: string;
   headline: string;
   location: string;
+  availability: string;
   email: string;
   links: {
     linkedin: { handle: string; url: string };
@@ -25,6 +26,11 @@ export interface Role {
   note?: string;
   tags?: string[];
   bullets: string[];
+  /** Additional web-only detail, disclosed after the CV highlights. */
+  details?: {
+    label: string;
+    bullets: string[];
+  };
 }
 
 export interface School {
@@ -38,12 +44,14 @@ export interface School {
 }
 
 export interface SkillGroup {
-  title: string;
-  rows: { label: string; items: string[] }[];
+  label: string;
+  items: string[];
 }
 
 export interface Cv {
   profile: Profile;
+  /** Short description for search and social previews. */
+  description: string;
   summary: string;
   experience: Role[];
   volunteering: Role[];
@@ -56,6 +64,7 @@ export const cv: Cv = {
     name: "Cameron Bloomfield",
     headline: "Front-End Focused Full-Stack Developer",
     location: "Newcastle, UK",
+    availability: "Open to remote",
     email: "cam.w.bloomfield@gmail.com",
     links: {
       linkedin: { handle: "/cam-bloom", url: "https://www.linkedin.com/in/cam-bloom" },
@@ -63,8 +72,11 @@ export const cv: Cv = {
     },
   },
 
+  description:
+    "Front-end-focused developer in Newcastle, UK, building React and TypeScript applications, shared component libraries, and full-stack products.",
+
   summary:
-    "Front-end-focused developer with 3+ years building production React and TypeScript applications and the systems around them: shared component libraries, monorepo build tooling, and CI/CD pipelines. Co-founded an events startup and, as sole engineer, designed its e-commerce platform in Figma and built it end to end on Next.js, Node.js, Stripe, and PostgreSQL; the venture took £100k+ in sales. Chemical engineer by training (First Class Honours), currently leading team adoption of agentic AI development (Claude Code).",
+    "Front-end-focused developer with 3+ years' professional experience building React and TypeScript applications, shared component libraries, and development tooling. Co-founded an events business generating £100k+ in total sales and, as sole engineer, designed and built its customer portal and e-commerce platform. Currently leading team adoption of agentic AI development (Claude Code).",
 
   experience: [
     {
@@ -73,8 +85,8 @@ export const cv: Cv = {
       start: "2024-11",
       end: null,
       context:
-        "Marine engineering company supplying maintenance-management and Integrated Logistic Support (ILS) software to commercial shipping, industrial, and naval customers including the Royal Navy; work centres on the next-generation product, now approaching commercial launch.",
-      note: "Progressed from the junior role below; now also reviewing other developers' pull requests. Part-time Jan-Apr 2026 while running Nueral; full-time otherwise.",
+        "Marine engineering company supplying maintenance-management and Integrated Logistic Support (ILS) software to shipping and naval customers including the Royal Navy; work centres on the next-generation product ahead of commercial launch.",
+      note: "Promoted from Junior Front-End Developer; now also reviewing colleagues' pull requests. Part-time Jan-Apr 2026 while running Nueral; full-time otherwise.",
       tags: [
         "React",
         "TypeScript",
@@ -88,20 +100,28 @@ export const cv: Cv = {
         "Claude Code",
       ],
       bullets: [
-        "Extracted a tightly coupled React component library into a standalone monorepo package, managing the internal dependency graph and writing custom ESLint rules to block cross-feature imports; owned the TypeScript and Rollup build tooling, later migrating to the esbuild engine for ~10x faster builds",
-        "Migrated source control and CI from on-prem Azure DevOps to GitHub: scrubbed secrets from repository history and rebuilt the pipeline on GitHub Actions optimised for compute minutes; a full CI run went from ~14 to ~6 minutes on included minutes alone",
-        "Designed a Docker Compose environment simulating 4 replication sites and evolved it into a full-stack development platform: per-site backends and MongoDB for identity isolation, a single multi-site dev server per frontend routing to the correct site backend, and watcher services that rebuild backends and the shared component library on change, so the whole replication setup can be tested and developed on one machine",
-        "Redesigned the entire frontend around the Fluent 2 design system, replacing a utilitarian, logic-first interface with a production-ready one",
-        "Led team adoption of agentic AI development (Claude Code): authored skills, root and per-package CLAUDE.md context files, and workflow guides; trained developers to work in parallel with git worktrees",
-        "Built worktree-isolation tooling so multiple agent sessions run in parallel: per-worktree port offsets for frontend and backend servers, per-worktree MongoDB copies with routing, automatic cleanup on worktree deletion, and a database-management CLI",
-        "Used AI agents to analyse every process in the application and write a complete synthetic database seed. The team had no non-customer-data dataset before; this one covers every workflow",
-        "Optimised frontend test-suite performance (~50% faster locally, ~40% on CI) and enabled Nx caching and 'nx affected' runs on the CI pipeline",
-        "Building the CD pipeline: CI publishes Docker images to GHCR, a self-hosted runner on local infrastructure pulls them, and Docker Swarm deploys them for zero-downtime rollouts",
+        "Extracted a tightly coupled React component library into a standalone monorepo package, enforced module boundaries with custom ESLint rules, and accelerated builds approximately 10x with esbuild",
+        "Redesigned the frontend around Fluent 2 by reworking the shared React component library, propagating consistent design patterns across nearly every screen",
         "Built a Word-style rich-text editor for technical documents using Lexical, with custom nodes for figures, captioned tables, and admonitions",
-        "Created a schema-editor React app for the JSON schemas that drive auto-generated product screens, using the File System Access API for direct filesystem read/write and Immer with nested React contexts to edit arbitrarily deep JSON structures",
-        "Upgraded the main application and shared component library to React 19 across the monorepo, working through breaking API and TypeScript type changes and third-party library compatibility",
-        "Migrated a replication frontend from AngularJS to a greenfield React app built on the shared component library",
+        "Built a React editor for the JSON schemas driving auto-generated product screens, supporting deeply nested structures and direct local file editing",
+        "Reduced frontend test runtime by ~50% locally and ~40% on CI. Migrated CI from Azure DevOps to GitHub Actions, cutting full pipeline runtime from ~14 to ~6 minutes at no additional compute cost",
+        "Built a Docker Compose development environment simulating four replication sites, with isolated backends and databases, enabling the full multi-site system to be developed and tested locally",
+        "Led team adoption of Claude Code through repository guidance and developer training; built isolated worktree environments with dedicated ports and MongoDB copies to support parallel agent sessions",
+        "Created the team's first synthetic development dataset using AI-assisted workflow analysis, covering the application's main processes without relying on customer data",
       ],
+      details: {
+        label: "More technical detail",
+        bullets: [
+          "Managed the shared component library's internal dependency graph and TypeScript build tooling, including its original Rollup build; custom ESLint rules prevent cross-feature imports",
+          "Implemented direct local file read/write in the schema editor with the File System Access API, using Immer and nested React contexts to edit deeply nested JSON structures",
+          "Migrated source control from on-prem Azure DevOps to GitHub, removed secrets from repository history, and enabled Nx caching and 'nx affected' runs in CI",
+          "Configured per-site backends and MongoDB instances for identity isolation, frontend routing to each site's backend, and watcher services that rebuild backends and the shared library on change",
+          "Authored root and per-package CLAUDE.md context files, reusable skills, and workflow guides; worktree tooling also includes database routing, automatic cleanup on deletion, and a database-management CLI",
+          "Upgraded the main application and shared component library to React 19 across the monorepo, resolving breaking API and TypeScript type changes and third-party library compatibility",
+          "Migrated a replication frontend from AngularJS to a new React application built on the shared component library",
+          "Built the CD pipeline using GitHub Container Registry, a self-hosted runner, and Docker Swarm to publish, pull, and deploy application images; rollout to the team is in progress",
+        ],
+      },
     },
     {
       org: "Isherwoods",
@@ -111,12 +131,17 @@ export const cv: Cv = {
       tags: ["React", "TypeScript", "Fluent UI", "AG-Grid", "Visx", "Vitest"],
       bullets: [
         "Migrated 29 screens from AngularJS to React and resolved 18 critical bugs",
-        "Built a command palette with a virtualised list and full keyboard support; screen navigation got up to 60% faster",
+        "Built a command palette with a virtualised list and full keyboard navigation for jumping between screens",
         "Developed a drag-and-drop dashboard builder using Gridstack and Visx for KPI data visualisation",
-        "Created a toolbar configurator with a kanban-style board and hierarchical lists",
-        "Designed a JSON-driven auto-form system powering context-specific search drawers",
-        "Introduced automated testing with Jest, later moving to Vitest, and reached 75%+ coverage on screens tested",
+        "Introduced automated testing with Jest, later moving to Vitest, across the migrated screens",
       ],
+      details: {
+        label: "More technical detail",
+        bullets: [
+          "Created a toolbar configurator with a kanban-style board and hierarchical lists",
+          "Designed a JSON-driven auto-form system powering context-specific search drawers",
+        ],
+      },
     },
     {
       org: "Nueral",
@@ -124,7 +149,7 @@ export const cv: Cv = {
       start: "2025-01",
       end: "2026-04",
       context:
-        "Concurrent with Isherwoods, above. Events company delivering two 10-day, ~50-person car rallies from northern England to Marrakech (Apr 2025 and Apr 2026), promoted by an influencer partner with a 600K+ Instagram following; £100k+ in total sales.",
+        "Concurrent with Isherwoods. Events company delivering two 10-day, ~50-person car rallies from northern England to Marrakech (Apr 2025 and Apr 2026); £100k+ in total sales.",
       tags: [
         "Next.js",
         "MedusaJS",
@@ -136,15 +161,21 @@ export const cv: Cv = {
         "Figma",
       ],
       bullets: [
-        "Sole engineer: designed the full ticketing and bookings platform in Figma and built it with Next.js, MedusaJS, Node.js, PostgreSQL, and Redis, deployed on Vercel and Render",
-        "Live for the second rally, handling customer documentation collection and leaving-party ticket sales, with rally bookings taken through Stripe payment links",
-        "Created the product-configurator page, cart, and conversion-optimised checkout informed by Baymard Institute research",
+        "Sole engineer: designed the customer portal and e-commerce platform in Figma and built it with Next.js, MedusaJS, and PostgreSQL. Used for the second rally's documentation collection and leaving-party ticket sales; rally bookings used Stripe payment links",
+        "Designed the product-configurator page, cart, and checkout using Baymard Institute usability research",
         "Implemented Stripe payment plans via a custom MedusaJS payment module, alongside a ticketing module, automated email notifications, and post-purchase add-ons",
-        "Developed a customer portal collecting travel documentation, including passport data encrypted and handled in compliance with data-protection law",
-        "Built a launch-ready skill-based competitions product, a location-guessing game with a Leaflet map interface and ticket purchasing",
-        "Built a multi-product catalogue on a Turborepo monorepo: rally configurators, separate leaving-party products, and merch-ready standard product pages for planned expansion",
-        "Co-owned product decisions, managed delivery in Linear integrated with agentic coding tools, led payment-provider negotiations, and co-ran both live international events",
+        "Developed a customer portal collecting travel documentation, with passport data encrypted at rest and restricted to admin-level access",
+        "Built a launch-ready location-guessing competition with a Leaflet map and integrated ticket purchasing",
+        "Co-owned product decisions, led payment-provider negotiations, and co-ran both international events",
       ],
+      details: {
+        label: "More technical detail",
+        bullets: [
+          "Deployed the platform on Vercel and Render, with a Next.js frontend and MedusaJS/Node.js backend using PostgreSQL and Redis",
+          "Built a multi-product catalogue in a Turborepo monorepo, with rally configurators, separate leaving-party products, and standard merchandise product pages for planned expansion",
+          "Managed product delivery in Linear integrated with agentic coding tools, alongside sole-engineer responsibility for design and implementation",
+        ],
+      },
     },
     {
       org: "MOOV Global",
@@ -177,81 +208,72 @@ export const cv: Cv = {
   education: [
     {
       org: "Northcoders Bootcamp",
-      title: "Trainee Software Developer",
+      title: "Trainee Full-Stack Developer",
       start: "2022-11",
       end: "2023-03",
-      tags: ["HTML", "CSS", "JavaScript", "React", "Node.js", "Express", "SQL"],
     },
     {
       org: "Newcastle University",
-      title: "Chemical Engineering",
-      detail: "1st Class Honours",
+      title: "BEng Chemical Engineering",
+      detail: "First Class Honours",
       start: "2018-09",
       end: "2021-06",
-    },
-    {
-      org: "Duchess Community High School",
-      title: "Sixth Form",
-      detail: "A,A,A",
-      start: "2013-09",
-      end: "2018-06",
     },
   ],
 
   skills: [
     {
-      title: "Languages",
-      rows: [{ label: "Languages", items: ["TypeScript", "JavaScript", "HTML", "CSS", "SQL"] }],
+      label: "Languages",
+      items: ["TypeScript", "JavaScript", "HTML", "CSS", "SQL"],
     },
     {
-      title: "Libraries & Tools",
-      rows: [
-        {
-          label: "Frontend",
-          items: [
-            "React",
-            "Next.js",
-            "Fluent UI",
-            "React Router",
-            "AG-Grid",
-            "Visx",
-            "Lexical",
-            "Leaflet",
-          ],
-        },
-        {
-          label: "Backend",
-          items: ["Node.js", "REST APIs", "MedusaJS", "PostgreSQL", "Redis", "MongoDB", "Stripe"],
-        },
-        {
-          label: "Tooling",
-          items: [
-            "Nx",
-            "Turborepo",
-            "esbuild",
-            "Vite",
-            "Vitest",
-            "MSW",
-            "ESLint",
-            "Docker",
-            "Docker Swarm",
-            "GitHub Actions",
-            "Git",
-            "CI/CD",
-            "Vercel",
-          ],
-        },
-        {
-          label: "Design",
-          items: [
-            "Figma",
-            "Design systems (Fluent 2)",
-            "Linear",
-            "Claude Code",
-            "Agentic AI workflows",
-          ],
-        },
+      label: "Frontend",
+      items: [
+        "React",
+        "Next.js",
+        "Fluent UI",
+        "Lexical",
+        "AG-Grid",
+        "Visx",
+        "React Router",
+        "Leaflet",
       ],
+    },
+    {
+      label: "Backend & Data",
+      items: [
+        "Node.js",
+        "Express",
+        "REST APIs",
+        "PostgreSQL",
+        "MongoDB",
+        "Stripe",
+        "MedusaJS",
+        "Redis",
+      ],
+    },
+    {
+      label: "Tooling",
+      items: [
+        "Nx",
+        "esbuild",
+        "Vite",
+        "Vitest",
+        "React Testing Library",
+        "ESLint",
+        "Docker",
+        "GitHub Actions",
+        "Git",
+        "Turborepo",
+        "MSW",
+        "Docker Swarm",
+        "Vercel",
+        "Render",
+      ],
+    },
+    {
+      label: "Design & AI",
+      items: ["Figma", "Design systems (Fluent 2)", "Claude Code"],
     },
   ],
 };

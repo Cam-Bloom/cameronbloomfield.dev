@@ -27,6 +27,7 @@ export function CvHeader({ profile }: { profile: Profile }) {
               {profile.email}
             </a>
           </li>
+          <li>{profile.availability}</li>
         </ul>
 
         <ul className="mt-3 flex flex-wrap items-center justify-center gap-3">

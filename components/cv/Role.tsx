@@ -17,6 +17,20 @@ export function Role({ role }: { role: RoleData }) {
       {role.note && <p className="text-body text-ink-soft">{role.note}</p>}
       {role.tags && <TagList items={role.tags} label={`Technologies used at ${role.org}`} />}
       <Bullets items={role.bullets} />
+      {role.details && (
+        <details className="cv-print-hide rounded-lg border border-line px-4 open:bg-chip/40">
+          <summary className="cursor-pointer rounded-sm py-2 text-body font-semibold text-ink-muted hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink">
+            {role.details.label}
+            <span className="sr-only">
+              {" "}
+              — {role.org}, {role.title}
+            </span>
+          </summary>
+          <div className="pb-4">
+            <Bullets items={role.details.bullets} />
+          </div>
+        </details>
+      )}
     </article>
   );
 }

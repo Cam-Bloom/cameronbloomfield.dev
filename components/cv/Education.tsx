@@ -21,8 +21,8 @@ export function Education({ schools }: { schools: School[] }) {
     <ul className="space-y-5">
       {schools.map((school) => (
         <li key={school.org} className="cv-avoid-break">
-          <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1">
-            <h3 className="text-heading text-ink">
+          <div className="flex items-start justify-between gap-x-4">
+            <h3 className="min-w-0 flex-1 text-heading wrap-break-word text-ink">
               <span className="font-bold">{school.org}</span>
               <span className="font-normal"> — {school.title}</span>
               {school.detail && (

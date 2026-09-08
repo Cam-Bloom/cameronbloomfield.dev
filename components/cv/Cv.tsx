@@ -15,7 +15,7 @@ export function Cv({ data }: { data: CvData }) {
         </Section>
 
         <Section id="experience" label="Experience">
-          <div className="space-y-4">
+          <div className="space-y-8">
             {data.experience.map((role) => (
               <Role key={`${role.org}-${role.start}`} role={role} />
             ))}
